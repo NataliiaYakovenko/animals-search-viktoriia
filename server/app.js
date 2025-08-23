@@ -6,6 +6,6 @@ const app = express();
 
 app.use(express.json());
 app.use('/api', router);
-app.use(errorHandlers.errorHandlers);
+app.use(errorHandlers);
 
 module.exports = app;

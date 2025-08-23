@@ -4,11 +4,13 @@ const petsController = require('../controllers/petsController');
 const petsRouter = Router();
 
 //  /api/pets
-petsRouter.route('/')
+petsRouter
+   .route('/')
    .post(petsController.createPet)
    .get(petsController.getPets)
 
-petsRouter.route('/:id')
+petsRouter
+   .route('/:id')
    .get(petsController.getPetById)
    .patch(petsController.updatePetById)
    .delete(petsController.deletePrtById)
