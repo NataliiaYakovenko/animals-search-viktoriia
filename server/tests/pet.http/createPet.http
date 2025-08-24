@@ -1,0 +1,12 @@
+POST http://localhost:5000/api/pets
+Content-Type: application/json
+
+{
+    "name": "Murchik",
+    "owner": "Rolland",
+    "ownerContacts": "+380956678346",
+    "description": "Boy, black, green eyes",
+    "city": "Kyiv",
+    "lostDate": "2025-08-24",
+    "petTypeId": 1
+}

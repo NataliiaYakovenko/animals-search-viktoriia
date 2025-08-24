@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       Pet.belongsTo(models.PetType, {
         foreignKey: {
           allowNull: false,
-          name: petTypeId,
+          name: 'petTypeId',
         },
         onDelete: 'RESTRACT',
         onUpdate: 'CASCADE',
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       city: {
-        type: Sequelize.ENUM('Kyiv', 'Dnipro', 'New York'),
+        type: DataTypes.ENUM('Kyiv', 'Dnipro', 'New York'),
         allowNull: false,
       },
       isFound: {
