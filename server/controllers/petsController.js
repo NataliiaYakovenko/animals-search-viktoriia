@@ -16,7 +16,14 @@ module.exports.createPet = async (req, res, next) => {
 
 module.exports.getPets = async (req, res, next) => {
   try {
-    res.status(200).send('OK');
+    const foundPets = await Pet.findAll({
+      raw: true,
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
+    if (!foundPets) {
+      res.status(404).send('Pets not found');
+    }
+    res.status(200).send({ data: foundPets });
   } catch (error) {
     next(error);
   }
