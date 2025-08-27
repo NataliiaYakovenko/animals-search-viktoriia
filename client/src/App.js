@@ -23,7 +23,7 @@ function App() {
           <Route path="/" exact>
             HOME
           </Route>
-          <Route path="./pet/create">
+          <Route path="/pet/create">
             <CreatePetPage />
           </Route>
           <Route path="/pets">

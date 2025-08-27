@@ -1,11 +1,10 @@
 import React from 'react';
 
-const PetsList = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+function PetsList() {
+  return 
+  <div>
+    PetsList
+    </div>;
 }
 
 export default PetsList;
