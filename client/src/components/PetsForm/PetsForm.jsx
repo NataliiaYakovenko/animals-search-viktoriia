@@ -1,10 +1,11 @@
 import { Field, Form, Formik } from 'formik';
+import { connect } from 'react-redux';
 
 const CITIES = ['Kyiv', 'Dnipro', 'New York'];
 
 //TODO_VALIDATE_SCHEMA
 
-function PetsForm() {
+function PetsForm({ petsType }) {
   const initialValues = {
     name: '',
     owner: '',
@@ -12,7 +13,7 @@ function PetsForm() {
     description: '',
     city: CITIES[0],
     lostDate: '',
-    petTypeId: '1',
+    petTypeId: petsType[0]?.id ?? '',
   };
 
   const handelSubmit = (values, formikBag) => {
@@ -69,19 +70,22 @@ function PetsForm() {
           </label>
           <br />
 
-
-          <label>Pet's type:</label>
-          <select
-            name="petTypeId"
-            value={formProps.values.petTypeId}
-            onChange={formProps.handleChange}
-          >
-            {[{ id: '1', type: 'parrot' }].map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.type}
-              </option>
-            ))}
-          </select>
+          {petsType.length !== 0 && (
+            <>
+              <label>Pet's type:</label>
+              <select
+                name="petTypeId"
+                value={formProps.values.petTypeId}
+                onChange={formProps.handleChange}
+              >
+                {petsType.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.type}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
 
           <br />
           <button type="submit">Add</button>
@@ -90,5 +94,8 @@ function PetsForm() {
     </Formik>
   );
 }
+//{petsData} =({petsTypeId}  - береться з дефтулзів
+const mapStateToProps = ({ petsData: { petsType } }) => ({ petsType });
+//const mapDispatchToProps = () => {};
 
-export default PetsForm;
+export default connect(mapStateToProps)(PetsForm);
