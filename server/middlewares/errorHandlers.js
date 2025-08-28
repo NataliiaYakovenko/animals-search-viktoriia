@@ -1,6 +1,7 @@
 //дефолтний обробник
 
 module.exports.errorHandlers = (err, req, res, next) => {
+    console.error('ERROR:', err);
   if (res.headersSent) {
     return;
   }

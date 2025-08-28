@@ -11,7 +11,7 @@ const PET_VALIDATION_SCHEMA = yup.object({
   description: yup.string().trim().required(),
   city: yup.string().oneOf(['Kyiv', 'Dnipro', 'New York']).required(),
   lostDate: yup.date().max(new Date()).required(),
-  petTypeId: yup.number().min(1).required()
+  petTypeId: yup.string().min(1).required()
 });
 
 module.exports = PET_VALIDATION_SCHEMA;

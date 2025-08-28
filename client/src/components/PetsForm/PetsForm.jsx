@@ -1,11 +1,13 @@
+import { useEffect } from 'react';
 import { Field, Form, Formik } from 'formik';
 import { connect } from 'react-redux';
+import { getTypesThunk, createPetThunk } from '../../store/slices/petsSlice';
 
 const CITIES = ['Kyiv', 'Dnipro', 'New York'];
 
 //TODO_VALIDATE_SCHEMA
 
-function PetsForm({ petsType }) {
+function PetsForm({ petTypes, getTypes, createPet }) {
   const initialValues = {
     name: '',
     owner: '',
@@ -13,13 +15,17 @@ function PetsForm({ petsType }) {
     description: '',
     city: CITIES[0],
     lostDate: '',
-    petTypeId: petsType[0]?.id ?? '',
+    petTypeId: petTypes[0]?.id ?? '',
   };
 
   const handelSubmit = (values, formikBag) => {
-    console.log('values', values);
+    createPet(values);
     formikBag.resetForm();
   };
+
+  useEffect(() => {
+    getTypes();
+  }, []);
 
   return (
     <Formik initialValues={initialValues} onSubmit={handelSubmit}>
@@ -70,7 +76,7 @@ function PetsForm({ petsType }) {
           </label>
           <br />
 
-          {petsType.length !== 0 && (
+          {petTypes.length !== 0 && (
             <>
               <label>Pet's type:</label>
               <select
@@ -78,7 +84,7 @@ function PetsForm({ petsType }) {
                 value={formProps.values.petTypeId}
                 onChange={formProps.handleChange}
               >
-                {petsType.map((t) => (
+                {petTypes.map((t) => (
                   <option key={t.id} value={t.id}>
                     {t.type}
                   </option>
@@ -94,8 +100,12 @@ function PetsForm({ petsType }) {
     </Formik>
   );
 }
-//{petsData} =({petsTypeId}  - береться з дефтулзів
-const mapStateToProps = ({ petsData: { petsType } }) => ({ petsType });
-//const mapDispatchToProps = () => {};
 
-export default connect(mapStateToProps)(PetsForm);
+//{petsData} =({petTypes}  - береться з дефтулзів
+const mapStateToProps = ({ petsData: { petTypes } }) => ({ petTypes });
+
+const mapDispatchToProps = (dispatch) => ({
+  getTypes: () => dispatch(getTypesThunk()),
+  createPet: (values) => dispatch(createPetThunk(values)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(PetsForm);
