@@ -25,7 +25,7 @@ function PetsForm({ petTypes, getTypes, createPet }) {
 
   useEffect(() => {
     getTypes();
-  }, []);
+  }, [getTypes]);
 
   return (
     <Formik initialValues={initialValues} onSubmit={handelSubmit}>
