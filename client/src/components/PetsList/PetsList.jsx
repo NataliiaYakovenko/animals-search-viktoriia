@@ -6,7 +6,7 @@ function PetsList({ pets, petTypes, isFetching, error, getPets, getTypes }) {
   useEffect(() => {
     getPets();
     getTypes();
-  }, []);
+  }, [getPets,getTypes]);
 
   return (
     <ul>
@@ -19,14 +19,14 @@ function PetsList({ pets, petTypes, isFetching, error, getPets, getTypes }) {
             {p.name}, {p.ownerContacts}, {p.city}
           </p>
           <p>{p.lostDate}</p>
-          <p>{p.petTypeId}</p>
+          <p>{petTypes.find((t) => t.id === p.petTypeId).type}</p>
         </li>
       ))}
     </ul>
   );
 }
 
-const mapStateToProps = ({ petsData }) =>  petsData;
+const mapStateToProps = ({ petsData }) => petsData;
 const mapDispatchToProps = (dispatch) => ({
   getPets: () => dispatch(getPetsThunk()),
   getTypes: () => dispatch(getTypesThunk()),
