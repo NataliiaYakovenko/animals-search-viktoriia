@@ -15,10 +15,20 @@ module.exports.createPet = async (req, res, next) => {
 };
 
 module.exports.getPets = async (req, res, next) => {
+  const { query } = req;
+  console.log('query', query);
+
+  const where = {};
+
+  if (query.petType) {
+    where.petTypeId = query.petType;
+  }
+
   try {
     const foundPets = await Pet.findAll({
       raw: true,
       attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where,
     });
     if (!foundPets) {
       res.status(404).send('Pets not found');

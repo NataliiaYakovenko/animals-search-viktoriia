@@ -8,6 +8,9 @@ const initialState = {
   petTypes: [],
   isFetching: false,
   error: null,
+  filter: {
+    petType: '',
+  },
 };
 
 export const getTypesThunk = createAsyncThunk(
@@ -44,7 +47,7 @@ export const getPetsThunk = createAsyncThunk(
     try {
       const {
         data: { data },
-      } = await API.getPets();
+      } = await API.getPets(payload);
       return data;
     } catch (error) {
       return rejectWithValue({ error: error.response.data });
@@ -55,6 +58,11 @@ export const getPetsThunk = createAsyncThunk(
 const petsSlice = createSlice({
   name: PET_SLICE_NAME,
   initialState,
+  reducers: {
+    changePetTypeFilter: (state, { payload }) => {
+      state.filter.petType = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getTypesThunk.fulfilled, (state, { payload }) => {
       state.petTypes = [...payload];
@@ -93,6 +101,7 @@ const petsSlice = createSlice({
   },
 });
 
-const { reducer } = petsSlice;
+const { reducer, actions } = petsSlice;
 
+export const {changePetTypeFilter}= actions;
 export default reducer;

@@ -1,35 +1,72 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getPetsThunk, getTypesThunk } from '../../store/slices/petsSlice';
+import {
+  changePetTypeFilter,
+  getPetsThunk,
+  getTypesThunk,
+} from '../../store/slices/petsSlice';
 
-function PetsList({ pets, petTypes, isFetching, error, getPets, getTypes }) {
+function PetsList({
+  pets,
+  petTypes,
+  filter,
+  isFetching,
+  error,
+  getPets,
+  getTypes,
+  changePetType,
+}) {
+  const { petType } = filter;
   useEffect(() => {
-    getPets();
     getTypes();
-  }, [getPets,getTypes]);
+  }, []);
+
+  useEffect(() => {
+    getPets(filter);
+  }, [petType]);
 
   return (
-    <ul>
-      {pets.map((p) => (
-        <li key={p.id}>
-          <p>
-            {p.owner},{p.description}
-          </p>
-          <p>
-            {p.name}, {p.ownerContacts}, {p.city}
-          </p>
-          <p>{p.lostDate}</p>
-          <p>{petTypes.find((t) => t.id === p.petTypeId).type}</p>
-        </li>
-      ))}
-    </ul>
+    <>
+      <section>
+        {petTypes.map((t) => (
+          <label key={t.id}>
+            <input
+              checked={petType == t.id}
+              type="radio"
+              name="petType"
+              value={t.id}
+              onChange={() => {
+                changePetType(t.id);
+              }}
+            />{' '}
+            {t.type}
+          </label>
+        ))}
+      </section>
+
+      <ul>
+        {pets.map((p) => (
+          <li key={p.id}>
+            <p>
+              {p.owner},{p.description}
+            </p>
+            <p>
+              {p.name}, {p.ownerContacts}, {p.city}
+            </p>
+            <p>{p.lostDate}</p>
+            <p>{petTypes.find((t) => t.id === p.petTypeId).type}</p>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 
 const mapStateToProps = ({ petsData }) => petsData;
 const mapDispatchToProps = (dispatch) => ({
-  getPets: () => dispatch(getPetsThunk()),
+  getPets: (data) => dispatch(getPetsThunk(data)),
   getTypes: () => dispatch(getTypesThunk()),
+  changePetType: (data) => dispatch(changePetTypeFilter(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PetsList);
